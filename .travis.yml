@@ -1,0 +1,40 @@
+os: osx
+language: cpp
+
+jobs:
+  include:
+    - name: macOS 10.14
+      os: osx
+      osx_image: xcode11.3
+    
+    - name: macOS 10.15
+      os: osx
+      osx_image: xcode12.2
+
+  
+before_install:
+  # Uninstall all existing packages to avoid conflicts
+  - brew remove --force $(brew list) --ignore-dependencies
+  - brew tap coslyk/mpv
+  - brew update
+
+install:
+  # Install dependencies
+  - brew install pkg-config
+
+script:
+  # Compile qt
+  - brew install -v --build-bottle qt-lite
+  # Build bottles
+  - brew bottle qt-lite
+
+
+# Upload bottles
+after_success:
+  - curl -Lo upload.sh https://github.com/probonopd/uploadtool/raw/master/upload.sh
+  - bash upload.sh *.tar.gz
+
+branches:
+  except:
+    - # Do not build tags that we create when we upload to GitHub Releases
+    - /^(?i:continuous.*)$/
