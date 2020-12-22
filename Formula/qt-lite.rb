@@ -40,7 +40,7 @@ class QtLite < Formula
       -skip qtlocation
       -skip qtmultimedia
       -skip qtnetworkauth
-      -skip qtquickcontrols2
+      -skip qtquickcontrols
       -skip qtscript
       -skip qtscxml
       -skip qtsensors
