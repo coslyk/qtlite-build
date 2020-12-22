@@ -15,7 +15,7 @@ jobs:
 before_install:
   # Uninstall all existing packages to avoid conflicts
   - brew remove --force $(brew list) --ignore-dependencies
-  - brew tap coslyk/mpv
+  - brew tap coslyk/qtlite
   - brew update
 
 install:
