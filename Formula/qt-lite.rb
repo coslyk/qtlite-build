@@ -38,6 +38,7 @@ class QtLite < Formula
       -skip qtgraphicaleffects
       -skip qtimageformats
       -skip qtlocation
+      -skip qtmacextras
       -skip qtmultimedia
       -skip qtnetworkauth
       -skip qtquickcontrols
@@ -78,6 +79,14 @@ class QtLite < Formula
       -no-feature-gssapi
       -no-feature-cups
       -no-feature-printer
+      -no-feature-qml-debug
+      -no-feature-qml-network
+      -no-feature-qml-profiler
+      -no-feature-qml-preview
+      -no-feature-qml-python
+      -no-feature-quick-canvas
+      -no-feature-quickcontrols2-imagine
+      -no-feature-quickcontrols2-universal
     ]
 
     system "./configure", *args
