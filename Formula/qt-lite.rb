@@ -83,8 +83,11 @@ class QtLite < Formula
       -no-feature-qml-network
       -no-feature-qml-profiler
       -no-feature-qml-preview
-      -no-feature-qml-python
       -no-feature-quick-canvas
+      -no-feature-assistant
+      -no-feature-designer
+      -no-feature-qdbus
+      -no-feature-qev
     ]
 
     system "./configure", *args
