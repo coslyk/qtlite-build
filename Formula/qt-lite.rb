@@ -85,8 +85,6 @@ class QtLite < Formula
       -no-feature-qml-preview
       -no-feature-qml-python
       -no-feature-quick-canvas
-      -no-feature-quickcontrols2-imagine
-      -no-feature-quickcontrols2-universal
     ]
 
     system "./configure", *args
