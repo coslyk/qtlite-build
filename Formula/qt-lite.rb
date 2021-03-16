@@ -86,7 +86,7 @@ class QtLite < Formula
       -no-feature-qtattributionsscanner
       -no-feature-qtdiag
       -no-style-fusion
-      -no-style-image
+      -no-style-imagine
       -no-style-universal
       -no-style-windows
       -system-sqlite
