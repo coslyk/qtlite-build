@@ -60,7 +60,6 @@ class QtLite < Formula
       -skip qtquick3d
       -skip qtquicktimeline
       -skip qtshadertools
-      -skip qtsvg
 
       -libproxy
       -no-feature-relocatable
