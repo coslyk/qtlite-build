@@ -17,15 +17,12 @@ class QtLite < Formula
   depends_on "freetype"
   depends_on "glib"
   depends_on "icu4c"
-  depends_on "jasper"
   depends_on "jpeg"
   depends_on "libb2"
   depends_on "libpng"
   depends_on "libproxy"
-  depends_on "libtiff"
   depends_on "pcre2"
   depends_on "python@3.9"
-  depends_on "webp"
   depends_on "zstd"
 
   uses_from_macos "krb5"
@@ -33,14 +30,7 @@ class QtLite < Formula
   uses_from_macos "sqlite"
   uses_from_macos "zlib"
 
-  resource "qtimageformats" do
-    url "https://download.qt.io/official_releases/additional_libraries/6.0/6.0.2/qtimageformats-everywhere-src-6.0.2.tar.xz"
-    sha256 "b0379ba6bbefbc48ed3ef8a1d8812531bd671362f74e0cffa6adf67bb1139206"
-  end
-
   def install
-    resources.each { |addition| addition.stage buildpath/addition.name }
-
     config_args = %W[
       -release
 
@@ -74,8 +64,6 @@ class QtLite < Formula
       -no-feature-eglfs
       -no-feature-mtdev
       -no-feature-pdf
-      -no-feature-textmarkdownreader
-      -no-feature-textmarkdownwriter
       -no-feature-textodfwriter
       -no-feature-vnc
       -no-feature-whatsthis
@@ -86,6 +74,7 @@ class QtLite < Formula
       -no-feature-qml-debug
       -no-feature-qml-profiler
       -no-feature-qml-preview
+      -no-feature-quick-animatedimage
       -no-feature-quick-canvas
       -no-feature-quick-designer
       -no-feature-assistant
@@ -94,6 +83,7 @@ class QtLite < Formula
       -no-feature-kmap2qmap
       -no-feature-pixeltool
       -no-feature-qdbus
+      -no-feature-qev
       -no-feature-qtattributionsscanner
       -no-feature-qtdiag
       -system-sqlite
