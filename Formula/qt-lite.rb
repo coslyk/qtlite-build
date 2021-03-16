@@ -90,9 +90,6 @@ class QtLite < Formula
       -no-feature-qml-preview
       -no-feature-quick-canvas
       -no-feature-quick-designer
-      -no-feature-quickcontrols2-imagine
-      -no-feature-quickcontrols2-universal
-      -no-feature-quickcontrols2-fusion
       -no-feature-assistant
       -no-feature-designer
       -no-feature-distancefieldgenerator
