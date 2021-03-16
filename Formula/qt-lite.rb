@@ -60,7 +60,6 @@ class QtLite < Formula
       -no-feature-sql
       -no-feature-testlib
       -no-feature-widgets
-      -no-feature-accessibility
       -no-feature-eglfs
       -no-feature-mtdev
       -no-feature-pdf
@@ -86,6 +85,10 @@ class QtLite < Formula
       -no-feature-qev
       -no-feature-qtattributionsscanner
       -no-feature-qtdiag
+      -no-style-fusion
+      -no-style-image
+      -no-style-universal
+      -no-style-windows
       -system-sqlite
     ]
 
