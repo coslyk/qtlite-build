@@ -1,61 +1,69 @@
 class QtLite < Formula
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
-  mirror "https://mirrors.dotsrc.org/qtproject/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
-  mirror "https://mirrors.ocf.berkeley.edu/qt/archive/qt/5.15/5.15.2/single/qt-everywhere-src-5.15.2.tar.xz"
-  sha256 "3a530d1b243b5dec00bc54937455471aaa3e56849d2593edb8ded07228202240"
+  url "https://download.qt.io/official_releases/qt/6.0/6.0.2/single/qt-everywhere-src-6.0.2.tar.xz"
+  sha256 "67a076640647783b95a907d2231e4f34cec69be5ed338c1c1b33124cadf10bdf"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
+  head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
 
-  keg_only "Qt 5 has CMake issues when linked"
+  keg_only "This Qt build is only used for my projects"
 
+  depends_on "cmake" => [:build, :test]
+  depends_on "ninja" => :build
   depends_on "pkg-config" => :build
   depends_on xcode: :build
-  depends_on macos: :sierra
 
-  uses_from_macos "bison"
-  uses_from_macos "flex"
+  depends_on "double-conversion"
+  depends_on "freetype"
+  depends_on "glib"
+  depends_on "icu4c"
+  depends_on "jasper"
+  depends_on "jpeg"
+  depends_on "libb2"
+  depends_on "libpng"
+  depends_on "libproxy"
+  depends_on "libtiff"
+  depends_on "pcre2"
+  depends_on "python@3.9"
+  depends_on "webp"
+  depends_on "zstd"
+
+  uses_from_macos "krb5"
+  uses_from_macos "perl"
   uses_from_macos "sqlite"
+  uses_from_macos "zlib"
+
+  resource "qtimageformats" do
+    url "https://download.qt.io/official_releases/additional_libraries/6.0/6.0.2/qtimageformats-everywhere-src-6.0.2.tar.xz"
+    sha256 "b0379ba6bbefbc48ed3ef8a1d8812531bd671362f74e0cffa6adf67bb1139206"
+  end
 
   def install
-    args = %W[
-      -prefix #{prefix}
+    resources.each { |addition| addition.stage buildpath/addition.name }
+
+    config_args = %W[
       -release
-      -opensource -confirm-license
-      -system-zlib
-      -qt-libpng
-      -qt-libjpeg
-      -qt-freetype
-      -qt-pcre
-      -nomake examples
-      -nomake tests
-      -no-rpath
-      -pkg-config
-      -skip qt3d
-      -skip qtcharts
-      -skip qtconnectivity
-      -skip qtgamepad
-      -skip qtgraphicaleffects
-      -skip qtimageformats
-      -skip qtlocation
-      -skip qtmacextras
-      -skip qtmultimedia
-      -skip qtnetworkauth
-      -skip qtquickcontrols
-      -skip qtscript
-      -skip qtscxml
-      -skip qtsensors
-      -skip qtserialbus
-      -skip qtserialport
-      -skip qtspeech
+
+      -prefix #{HOMEBREW_PREFIX}
+      -extprefix #{prefix}
+
+      -libexecdir share/qt/libexec
+      -plugindir share/qt/plugins
+      -qmldir share/qt/qml
+      -docdir share/doc/qt
+      -translationdir share/qt/translations
+      -examplesdir share/qt/examples
+      -testsdir share/qt/tests
+
+      -skip qt5compat
+      -skip qtdoc
+      -skip qtquick3d
+      -skip qtquicktimeline
+      -skip qtshadertools
       -skip qtsvg
-      -skip qttranslations
-      -skip qtvirtualkeyboard
-      -skip qtwebchannel
-      -skip qtwebengine
-      -skip qtwebsockets
-      -skip qtwebview
-      -skip qtxmlpatterns 
+
+      -libproxy
+      -no-feature-relocatable
       -no-feature-concurrent
       -no-feature-dbus
       -no-feature-host-dbus
@@ -79,29 +87,48 @@ class QtLite < Formula
       -no-feature-gssapi
       -no-feature-cups
       -no-feature-printer
-      -no-feature-qml-debug
       -no-feature-qml-network
+      -no-feature-qml-debug
       -no-feature-qml-profiler
       -no-feature-qml-preview
       -no-feature-quick-canvas
+      -no-feature-quick-designer
+      -no-feature-quickcontrols2-imagine
+      -no-feature-quickcontrols2-universal
+      -no-feature-quickcontrols2-fusion
       -no-feature-assistant
       -no-feature-designer
+      -no-feature-distancefieldgenerator
+      -no-feature-kmap2qmap
+      -no-feature-pixeltool
       -no-feature-qdbus
-      -no-feature-qev
+      -no-feature-qtattributionsscanner
+      -no-feature-qtdiag
+      -system-sqlite
     ]
 
-    system "./configure", *args
+    cmake_args = std_cmake_args.reject { |s| s["CMAKE_INSTALL_PREFIX"]||s["CMAKE_FIND_FRAMEWORK"] } + %W[
+      -DICU_ROOT=#{Formula["icu4c"].opt_prefix}
 
-    # Remove reference to shims directory
-    inreplace "qtbase/mkspecs/qmodule.pri",
-              /^PKG_CONFIG_EXECUTABLE = .*$/,
-              "PKG_CONFIG_EXECUTABLE = #{Formula["pkg-config"].opt_bin/"pkg-config"}"
-    system "make"
-    ENV.deparallelize
-    system "make", "install"
+      -DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}
+      -DCMAKE_FIND_FRAMEWORK=FIRST
+
+      -DINSTALL_MKSPECSDIR=share/qt/mkspecs
+      -DINSTALL_DESCRIPTIONSDIR=share/qt/modules
+
+      -DFEATURE_pkg_config=ON
+    ]
+
+    system "./configure", *config_args, "--", *cmake_args
+    system "ninja"
+    system "ninja", "install"
+
+    rm bin/"qt-cmake-private-install.cmake"
 
     # Some config scripts will only find Qt in a "Frameworks" folder
     frameworks.install_symlink Dir["#{lib}/*.framework"]
+
+    inreplace lib/"cmake/Qt6/qt.toolchain.cmake", /.*set.__qt_initial_.*/, ""
 
     # The pkg-config files installed suggest that headers can be found in the
     # `include` directory. Make this so by creating symlinks from `include` to
@@ -110,47 +137,10 @@ class QtLite < Formula
       include.install_symlink path => path.parent.basename(".framework")
     end
 
-    # Move `*.app` bundles into `libexec` to expose them to `brew linkapps` and
-    # because we don't like having them in `bin`.
-    # (Note: This move breaks invocation of Assistant via the Help menu
-    # of both Designer and Linguist as that relies on Assistant being in `bin`.)
-    libexec.mkpath
-    Pathname.glob("#{bin}/*.app") { |app| mv app, libexec }
-  end
-
-  def caveats
-    <<~EOS
-      We agreed to the Qt open source license for you.
-      If this is unacceptable you should uninstall.
-    EOS
-  end
-
-  test do
-    (testpath/"hello.pro").write <<~EOS
-      QT       += core
-      QT       -= gui
-      TARGET = hello
-      CONFIG   += console
-      CONFIG   -= app_bundle
-      TEMPLATE = app
-      SOURCES += main.cpp
-    EOS
-
-    (testpath/"main.cpp").write <<~EOS
-      #include <QCoreApplication>
-      #include <QDebug>
-      int main(int argc, char *argv[])
-      {
-        QCoreApplication a(argc, argv);
-        qDebug() << "Hello World!";
-        return 0;
-      }
-    EOS
-
-    system bin/"qmake", testpath/"hello.pro"
-    system "make"
-    assert_predicate testpath/"hello", :exist?
-    assert_predicate testpath/"main.o", :exist?
-    system "./hello"
+    mkdir libexec
+    Pathname.glob("#{bin}/*.app") do |app|
+      mv app, libexec
+      bin.write_exec_script "#{libexec/app.stem}.app/Contents/MacOS/#{app.stem}"
+    end
   end
 end
