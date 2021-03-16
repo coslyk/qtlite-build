@@ -60,6 +60,7 @@ class QtLite < Formula
       -skip qtquick3d
       -skip qtquicktimeline
       -skip qtshadertools
+      -skip qtwayland
 
       -libproxy
       -no-feature-relocatable
@@ -69,10 +70,8 @@ class QtLite < Formula
       -no-feature-sql
       -no-feature-testlib
       -no-feature-widgets
-      -no-feature-xml
       -no-feature-accessibility
       -no-feature-eglfs
-      -no-feature-gif
       -no-feature-mtdev
       -no-feature-pdf
       -no-feature-textmarkdownreader
