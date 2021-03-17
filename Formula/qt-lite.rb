@@ -13,6 +13,7 @@ class QtLite < Formula
   depends_on "pkg-config" => :build
   depends_on xcode: :build
 
+  depends_on "double-conversion"
   depends_on "freetype"
   depends_on "glib"
   depends_on "icu4c"
@@ -55,7 +56,6 @@ class QtLite < Formula
       -no-dbus
       -no-widgets
       -no-cups
-      -no-doubleconversion
       -no-feature-relocatable
       -no-feature-concurrent
       -no-feature-libudev
