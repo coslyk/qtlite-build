@@ -13,7 +13,6 @@ class QtLite < Formula
   depends_on "pkg-config" => :build
   depends_on xcode: :build
 
-  depends_on "double-conversion"
   depends_on "freetype"
   depends_on "glib"
   depends_on "icu4c"
@@ -53,13 +52,15 @@ class QtLite < Formula
       -skip qtwayland
 
       -libproxy
+      -no-dbus
+      -no-widgets
+      -no-cups
+      -no-doubleconversion
       -no-feature-relocatable
       -no-feature-concurrent
-      -no-feature-dbus
       -no-feature-libudev
       -no-feature-sql
       -no-feature-testlib
-      -no-feature-widgets
       -no-feature-eglfs
       -no-feature-mtdev
       -no-feature-pdf
@@ -67,7 +68,6 @@ class QtLite < Formula
       -no-feature-vnc
       -no-feature-whatsthis
       -no-feature-gssapi
-      -no-feature-cups
       -no-feature-printer
       -no-feature-qml-network
       -no-feature-qml-debug
@@ -85,10 +85,6 @@ class QtLite < Formula
       -no-feature-qev
       -no-feature-qtattributionsscanner
       -no-feature-qtdiag
-      -no-style-fusion
-      -no-style-imagine
-      -no-style-universal
-      -no-style-windows
       -system-sqlite
     ]
 
