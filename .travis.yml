@@ -20,7 +20,7 @@ before_install:
 
 install:
   # Install dependencies
-  - brew install pkg-config double-conversion freetype glib icu4c jasper jpeg libb2 libpng libproxy libtiff pcre2 python@3.9 webp zstd
+  - brew install pkg-config freetype icu4c jasper jpeg libb2 libpng libproxy libtiff pcre2 python@3.9 webp zstd
 
 script:
   # Compile qt
