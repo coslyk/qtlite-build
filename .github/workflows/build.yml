@@ -18,7 +18,7 @@ jobs:
         run: |
           brew update
           brew tap coslyk/qtlite
-          brew install pkg-config freetype icu4c jasper jpeg libb2 libpng libproxy libtiff pcre2 python@3.9 webp zstd
+          brew install pkg-config freetype double-conversion icu4c jasper jpeg libb2 libpng libproxy libtiff pcre2 python@3.9 zstd
 
       - name: Build package
         run: brew install -v --build-bottle qt-lite
