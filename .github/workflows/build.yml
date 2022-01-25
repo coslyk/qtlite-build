@@ -12,18 +12,24 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Update homebrew
+        run: brew update
+
       - name: Install dependencies
         env:
           HOMEBREW_NO_AUTO_UPDATE: 1
         run: |
-          brew update
           brew tap coslyk/qtlite
           brew install pkg-config freetype double-conversion icu4c jasper jpeg libb2 libpng libproxy libtiff pcre2 python@3.9 zstd
 
       - name: Build package
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
         run: brew install -v --build-bottle qt-lite
 
       - name: Build bottles
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
         run: brew bottle qt-lite
 
       - name: Upload bottles
