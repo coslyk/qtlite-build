@@ -34,11 +34,11 @@ class QtLite < Formula
   uses_from_macos "sqlite"
   uses_from_macos "zlib"
 
-  %w[
+  def install
+    %w[
       qtbase/CMakeLists.txt
     ].each { |s| inreplace s, "REALPATH", "ABSOLUTE" }
-
-  def install
+    
     config_args = %W[
       -release
 
