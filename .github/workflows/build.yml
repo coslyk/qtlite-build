@@ -1,0 +1,35 @@
+
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: macos-10.15
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+        run: |
+          brew tap coslyk/qtlite
+          brew update
+          brew install pkg-config freetype icu4c jasper jpeg libb2 libpng libproxy libtiff pcre2 python@3.9 webp zstd
+
+      - name: Build package
+        run: brew install -v --build-bottle qt-lite
+
+      - name: Build bottles
+        run: brew bottle qt-lite
+
+      - name: Upload bottles
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          curl -Lo upload.sh https://github.com/probonopd/uploadtool/raw/master/upload.sh
+          bash upload.sh *.tar.gz
