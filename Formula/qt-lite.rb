@@ -38,6 +38,10 @@ class QtLite < Formula
     %w[
       qtbase/CMakeLists.txt
     ].each { |s| inreplace s, "REALPATH", "ABSOLUTE" }
+
+    inreplace "qtdeclarative/src/CMakeLists.txt", "add_subdirectory(quickcontrolstestutils)", ""
+    inreplace "qtdeclarative/src/CMakeLists.txt", "add_subdirectory(qmltest)", ""
+    inreplace "qtdeclarative/src/CMakeLists.txt", "add_subdirectory(quicktestutils)", ""
     
     config_args = %W[
       -release
@@ -88,6 +92,8 @@ class QtLite < Formula
       -no-inotify
       -no-mtdev
       -no-pch
+      -no-sctp
+      -no-securetransport
       -no-syslog
       -no-tslib
       -no-widgets
