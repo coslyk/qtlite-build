@@ -88,8 +88,6 @@ class QtLite < Formula
       -no-inotify
       -no-mtdev
       -no-pch
-      -no-sctp
-      -no-securetransport
       -no-syslog
       -no-tslib
       -no-widgets
