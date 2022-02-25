@@ -20,12 +20,12 @@ class QtLite < Formula
   depends_on "pkg-config" => :build
   depends_on xcode: :build
 
+  depends_on "brotli"
   depends_on "double-conversion"
   depends_on "freetype"
   depends_on "icu4c"
   depends_on "jpeg"
   depends_on "libb2"
-  depends_on "libpng"
   depends_on "libproxy"
   depends_on "pcre2"
   depends_on "python@3.9"
