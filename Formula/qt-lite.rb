@@ -1,17 +1,10 @@
 class QtLite < Formula
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.2/6.2.2/single/qt-everywhere-src-6.2.2.tar.xz"
-  sha256 "907994f78d42b30bdea95e290e91930c2d9b593f3f8dd994f44157e387feee0f"
+  url "https://download.qt.io/official_releases/qt/6.2/6.2.3/single/qt-everywhere-src-6.2.3.tar.xz"
+  sha256 "f784998a159334d1f47617fd51bd0619b9dbfe445184567d2cd7c820ccb12771"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
-  
-  bottle do
-    root_url "https://github.com/coslyk/homebrew-qtlite/releases/download/continuous"
-    rebuild 1
-    sha256 cellar: :any, big_sur: "ce3fee959e6203a2f13d130a9985ea23ce5f9b630d2d165001a86c4fc774f426"
-    sha256 cellar: :any, catalina: "c884d2489ccca833477dbd10e5a65159653c0cb9b5d9a0b468be5fa1ce3f8da5"
-  end
 
   keg_only "This Qt build is only used for my projects"
 
