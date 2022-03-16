@@ -6,13 +6,6 @@ class QtLite < Formula
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
 
-  bottle do
-    root_url "https://github.com/coslyk/homebrew-qtlite/releases/download/continuous"
-    rebuild 1
-    sha256 cellar: :any, big_sur: "2d9d1ac2ebe0f17001febd58ab26902a15ce4a7e4d60583c49b36510dee83266"
-    sha256 cellar: :any, catalina: "e5ddc066abd175567ef1e8e9ac3b0758d4d5bae356abeb564070628537261b62"
-  end
-
   keg_only "This Qt build is only used for my projects"
 
   depends_on "cmake" => [:build, :test]
@@ -115,7 +108,6 @@ class QtLite < Formula
       -no-feature-concurrent
       -no-feature-libudev
       -no-feature-sql
-      -no-feature-accessibility
       -no-feature-eglfs
       -no-feature-pdf
       -no-feature-textodfwriter
@@ -139,6 +131,7 @@ class QtLite < Formula
       -no-feature-qtdiag
       -no-gif
       -no-ico
+      -qt-libpng
       -system-sqlite
       -nomake examples
       -nomake tests
