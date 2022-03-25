@@ -5,6 +5,13 @@ class QtLite < Formula
   sha256 "f784998a159334d1f47617fd51bd0619b9dbfe445184567d2cd7c820ccb12771"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
+  
+  bottle do
+    root_url "https://github.com/coslyk/homebrew-qtlite/releases/download/continuous"
+    rebuild 1
+    sha256 cellar: :any, big_sur: "4800df4a8ca0e302ebe7b1f0fa0c566a4eed1f36af42ca1f05ae5e45552f407a"
+    sha256 cellar: :any, catalina: "cdfcc07d7881f827425ca69f60b234df2b8d74fea5f7270fe3da967dd4634b64"
+  end
 
   keg_only "This Qt build is only used for my projects"
 
