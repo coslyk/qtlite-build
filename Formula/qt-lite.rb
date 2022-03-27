@@ -5,13 +5,6 @@ class QtLite < Formula
   sha256 "f784998a159334d1f47617fd51bd0619b9dbfe445184567d2cd7c820ccb12771"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
-  
-  bottle do
-    root_url "https://github.com/coslyk/homebrew-qtlite/releases/download/continuous"
-    rebuild 1
-    sha256 cellar: :any, big_sur: "4800df4a8ca0e302ebe7b1f0fa0c566a4eed1f36af42ca1f05ae5e45552f407a"
-    sha256 cellar: :any, catalina: "cdfcc07d7881f827425ca69f60b234df2b8d74fea5f7270fe3da967dd4634b64"
-  end
 
   keg_only "This Qt build is only used for my projects"
 
@@ -46,6 +39,13 @@ class QtLite < Formula
   patch do
     url "https://raw.githubusercontent.com/Homebrew/formula-patches/c363f0edf9e90598d54bc3f4f1bacf95abbda282/qt/qt_internal_check_if_path_has_symlinks.patch"
     sha256 "1afd8bf3299949b2717265228ca953d8d9e4201ddb547f43ed84ac0d7da7a135"
+    directory "qtbase"
+  end
+
+  # Patch for https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-25255
+  patch do
+    url "https://download.qt.io/official_releases/qt/6.2/CVE-2022-25255-qprocess6-2.diff"
+    sha256 "62068c168dd1fde7fa7b0b574fcb692ca0c20e44165fa2aafae586ca199b9f00"
     directory "qtbase"
   end
   
@@ -152,6 +152,11 @@ class QtLite < Formula
     system "cmake", "--install", "."
 
     rm bin/"qt-cmake-private-install.cmake"
+
+    (bin/"qt.conf").write <<~EOS
+      [Paths]
+      Prefix = ..
+    EOS
 
     inreplace lib/"cmake/Qt6/qt.toolchain.cmake", Superenv.shims_path, ""
 
