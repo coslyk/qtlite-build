@@ -5,15 +5,6 @@ class QtLite < Formula
   sha256 "f784998a159334d1f47617fd51bd0619b9dbfe445184567d2cd7c820ccb12771"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
-  
-  bottle do
-     root_url "https://github.com/coslyk/homebrew-qtlite/releases/download/continuous"
-     rebuild 1
-     sha256 cellar: :any, big_sur: "03fb6dc24616cd900c63131e15c32bab2194117ee1d5ea0e1da5177225152397"
-     sha256 cellar: :any, catalina: "103a0b61fb9931ddc02c54ac80a75968742f8f730dd80cc6d2c07fc52312d58e"
-   end
-
-  keg_only "This Qt build is only used for my projects"
 
   depends_on "cmake" => [:build, :test]
   depends_on "ninja" => :build
@@ -67,6 +58,10 @@ class QtLite < Formula
       -prefix #{HOMEBREW_PREFIX}
       -extprefix #{prefix}
       -libexecdir bin
+      -archdatadir share/qt
+      -datadir share/qt
+      -examplesdir share/qt/examples
+      -testsdir share/qt/tests
 
       -skip qt3d
       -skip qt5compat
