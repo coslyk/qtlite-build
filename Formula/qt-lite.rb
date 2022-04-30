@@ -9,8 +9,8 @@ class QtLite < Formula
   bottle do
      root_url "https://github.com/coslyk/homebrew-qtlite/releases/download/continuous"
      rebuild 1
-     sha256 cellar: :any, big_sur: "30d4f4b5c80d30baa43a3a7574a0688a70dd03a9b272aca614c203d42a78006e"
-     sha256 cellar: :any, catalina: "6c2d927a652d3fd3fa706f64bdb6624bfeeb995c8ccb946082771029c0cc3451"
+     sha256 cellar: :any, big_sur: "03fb6dc24616cd900c63131e15c32bab2194117ee1d5ea0e1da5177225152397"
+     sha256 cellar: :any, catalina: "103a0b61fb9931ddc02c54ac80a75968742f8f730dd80cc6d2c07fc52312d58e"
    end
 
   keg_only "This Qt build is only used for my projects"
