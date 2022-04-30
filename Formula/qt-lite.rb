@@ -6,13 +6,6 @@ class QtLite < Formula
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
 
-  bottle do
-    root_url "https://github.com/coslyk/homebrew-qtlite/releases/download/continuous"
-    rebuild 1
-    sha256 cellar: :any, big_sur: "30d4f4b5c80d30baa43a3a7574a0688a70dd03a9b272aca614c203d42a78006e"
-    sha256 cellar: :any, catalina: "6c2d927a652d3fd3fa706f64bdb6624bfeeb995c8ccb946082771029c0cc3451"
-  end
-
   keg_only "This Qt build is only used for my projects"
 
   depends_on "cmake" => [:build, :test]
@@ -163,7 +156,7 @@ class QtLite < Formula
 
     (bin/"qt.conf").write <<~EOS
       [Paths]
-      Prefix = ..
+      Prefix = /usr/local/opt/qt-lite
     EOS
 
     inreplace lib/"cmake/Qt6/qt.toolchain.cmake", Superenv.shims_path, ""
