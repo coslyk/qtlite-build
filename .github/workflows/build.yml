@@ -19,7 +19,7 @@ jobs:
 
       - name: Build
         run: |
-          cd qt-everywhere-opensource-src-6.2.4
+          cd qt-everywhere-src-6.2.4
           
           sed -i -e "s|add_subdirectory(quickcontrolstestutils)||g" qtdeclarative/src/CMakeLists.txt
           sed -i -e "s|add_subdirectory(qmltest)||g" qtdeclarative/src/CMakeLists.txt
