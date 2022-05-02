@@ -1,0 +1,116 @@
+
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    os: macos-10.15
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Download source
+        run: |
+          curl -Lo qt.tar.xz 'https://download.qt.io/official_releases/qt/6.2/6.2.4/single/qt-everywhere-src-6.2.4.tar.xz'
+          tar -xf qt.tar.xz
+
+      - name: Build
+        env:
+        run: |
+          cd qt-everywhere-opensource-src-6.2.4
+          
+          sed -i -e "s|add_subdirectory(quickcontrolstestutils)||g" qtdeclarative/src/CMakeLists.txt
+          sed -i -e "s|add_subdirectory(qmltest)||g" qtdeclarative/src/CMakeLists.txt
+          sed -i -e "s|add_subdirectory(quicktestutils)||g" qtdeclarative/src/CMakeLists.txt
+          
+          ./configure \
+            -release \
+            -skip qt3d \
+            -skip qt5compat \
+            -skip qtactiveqt \
+            -skip qtcharts \
+            -skip qtcoap \
+            -skip qtconnectivity \
+            -skip qtdatavis3d \
+            -skip qtdoc \
+            -skip qtlottie \
+            -skip qtmultimedia \
+            -skip qtmqtt \
+            -skip qtnetworkauth \
+            -skip qtopcua \
+            -skip qtpositioning \
+            -skip qtquick3d \
+            -skip qtquicktimeline \
+            -skip qtremoteobjects \
+            -skip qtscxml \
+            -skip qtsensors \
+            -skip qtserialbus \
+            -skip qtserialport \
+            -skip qtvirtualkeyboard \
+            -skip qtwayland \
+            -skip qtwebchannel \
+            -skip qtwebengine \
+            -skip qtwebsockets \
+            -skip qtwebview \
+            -no-dbus \
+            -no-directfb \
+            -no-cups \
+            -no-eglfs \
+            -no-evdev \
+            -no-eventfd \
+            -no-journald \
+            -no-glib \
+            -no-gtk \
+            -no-inotify \
+            -no-mtdev \
+            -no-pch \
+            -no-sctp \
+            -no-securetransport \
+            -no-syslog \
+            -no-tslib \
+            -no-widgets \
+            -no-feature-relocatable \
+            -no-feature-concurrent \
+            -no-feature-libudev \
+            -no-feature-sql \
+            -no-feature-eglfs \
+            -no-feature-pdf \
+            -no-feature-textodfwriter \
+            -no-feature-vnc \
+            -no-feature-whatsthis \
+            -no-feature-gssapi \
+            -no-feature-printer \
+            -no-feature-qml-network \
+            -no-feature-qml-preview \
+            -no-feature-quick-animatedimage \
+            -no-feature-quick-canvas \
+            -no-feature-quick-designer \
+            -no-feature-distancefieldgenerator \
+            -no-feature-kmap2qmap \
+            -no-feature-pixeltool \
+            -no-feature-qdbus \
+            -no-feature-qev \
+            -no-feature-qtattributionsscanner \
+            -no-feature-qtdiag \
+            -no-gif \
+            -no-ico \
+            -qt-libpng \
+            -nomake examples \
+            -nomake tests
+          
+          cmake --build . --parallel
+          cmake --install .
+          cd ..
+
+      - name: Upload
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          zip -9 -r qt6.zip /usr/local/Qt-6.2.4
+          set -e
+          curl -Lo upload.sh https://github.com/probonopd/uploadtool/raw/master/upload.sh
+          bash upload.sh qt6.zip
