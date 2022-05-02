@@ -27,6 +27,8 @@ jobs:
           
           ./configure \
             -release \
+            -prefix $HOME/qt6 \
+            -libexecdir bin \
             -skip qt3d \
             -skip qt5compat \
             -skip qtactiveqt \
@@ -104,11 +106,19 @@ jobs:
           cmake --install .
           cd ..
 
+      - name: Add qt.conf
+        run: |
+          ls $HOME/qt6/bin
+          cat > "$HOME/qt6/bin/qt.conf" <<\EOF
+          [Paths]
+          Prefix = ..
+          EOF
+
       - name: Upload
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          zip -9 -r qt6.zip /usr/local/Qt-6.2.4
+          zip -9 -r qt6.zip $HOME/qt6
           set -e
           curl -Lo upload.sh https://github.com/probonopd/uploadtool/raw/master/upload.sh
           bash upload.sh qt6.zip
