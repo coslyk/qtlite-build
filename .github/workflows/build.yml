@@ -107,7 +107,9 @@ jobs:
             -no-ico \
             -qt-libpng \
             -nomake examples \
-            -nomake tests
+            -nomake tests \
+            -- \
+            -DFEATURE_pkg_config=ON
           
           cmake --build . --parallel
           cmake --install .
