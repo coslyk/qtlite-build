@@ -1,17 +1,13 @@
 class QtLite < Formula
+
   desc "Cross-platform application and UI framework"
   homepage "https://www.qt.io/"
-  url "https://download.qt.io/official_releases/qt/6.2/6.2.3/single/qt-everywhere-src-6.2.3.tar.xz"
-  sha256 "f784998a159334d1f47617fd51bd0619b9dbfe445184567d2cd7c820ccb12771"
+  url "https://download.qt.io/official_releases/qt/6.2/6.2.4/single/qt-everywhere-src-6.2.4.tar.xz"
+  sha256 "cfe41905b6bde3712c65b102ea3d46fc80a44c9d1487669f14e4a6ee82ebb8fd"
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
 
-  bottle do
-     root_url "https://github.com/coslyk/homebrew-qtlite/releases/download/continuous"
-     rebuild 1
-     sha256 cellar: :any, big_sur: "2ef9a8c10064a2653f27f7e6c8495f619262cfee90e79518603c0f9e1a93c028"
-     sha256 cellar: :any, catalina: "64c9da1620f0a47b0f1ce09eb925a09c3a6739bda3e944d041ba64bfcc79c3ad"
-   end
+  keg_only "This Qt build is only used for my projects"
    
   depends_on "cmake" => [:build, :test]
   depends_on "ninja" => :build
@@ -46,13 +42,6 @@ class QtLite < Formula
     sha256 "1afd8bf3299949b2717265228ca953d8d9e4201ddb547f43ed84ac0d7da7a135"
     directory "qtbase"
   end
-
-  # Patch for https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-25255
-  patch do
-    url "https://download.qt.io/official_releases/qt/6.2/CVE-2022-25255-qprocess6-2.diff"
-    sha256 "62068c168dd1fde7fa7b0b574fcb692ca0c20e44165fa2aafae586ca199b9f00"
-    directory "qtbase"
-  end
   
   def install
     inreplace "qtdeclarative/src/CMakeLists.txt", "add_subdirectory(quickcontrolstestutils)", ""
@@ -65,10 +54,6 @@ class QtLite < Formula
       -prefix #{HOMEBREW_PREFIX}
       -extprefix #{prefix}
       -libexecdir bin
-      -archdatadir share/qt
-      -datadir share/qt
-      -examplesdir share/qt/examples
-      -testsdir share/qt/tests
 
       -skip qt3d
       -skip qt5compat
@@ -154,6 +139,7 @@ class QtLite < Formula
       -DCMAKE_OSX_DEPLOYMENT_TARGET=#{MacOS.version}
       -DINSTALL_MKSPECSDIR=share/qt/mkspecs
       -DFEATURE_pkg_config=ON
+      -DQT_FEATURE_avx2=OFF
     ]
 
 
