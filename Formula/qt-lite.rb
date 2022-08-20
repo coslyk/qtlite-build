@@ -7,13 +7,6 @@ class QtLite < Formula
   license all_of: ["GFDL-1.3-only", "GPL-2.0-only", "GPL-3.0-only", "LGPL-2.1-only", "LGPL-3.0-only"]
   head "https://code.qt.io/qt/qt5.git", branch: "dev", shallow: false
 
-  bottle do
-    rebuild 1
-    root_url "https://github.com/coslyk/homebrew-qtlite/releases/download/continuous"
-    sha256 cellar: :any, big_sur: "44988a33ffcbba21d75f8db4e404189fb236e8737fc787d0fd9633868b8cd8d0"
-    sha256 cellar: :any, catalina: "becf1c043364a9dba8144bc2dd12a1c62d32e27027aabc7b73f76c8399e01fc1"
-  end
-
   keg_only "This Qt build is only used for my projects"
    
   depends_on "cmake" => [:build, :test]
@@ -21,13 +14,13 @@ class QtLite < Formula
   depends_on "pkg-config" => :build
   depends_on xcode: :build
 
-  depends_on "brotli"
   depends_on "double-conversion"
   depends_on "freetype"
   depends_on "icu4c"
   depends_on "jpeg"
   depends_on "libb2"
   depends_on "libproxy"
+  depends_on "openssl@1.1"
   depends_on "pcre2"
   depends_on "python@3.9"
   depends_on "zstd"
@@ -108,6 +101,7 @@ class QtLite < Formula
       -no-syslog
       -no-tslib
       -no-widgets
+      -no-feature-brotli
       -no-feature-rpath
       -no-feature-relocatable
       -no-feature-concurrent
@@ -155,6 +149,11 @@ class QtLite < Formula
     system "cmake", "--install", "."
 
     rm bin/"qt-cmake-private-install.cmake"
+
+    (bin/"qt.conf").write <<~EOS
+      [Paths]
+      Prefix = ..
+    EOS
 
     inreplace lib/"cmake/Qt6/qt.toolchain.cmake", Superenv.shims_path, ""
 

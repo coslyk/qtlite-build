@@ -23,7 +23,7 @@ jobs:
           HOMEBREW_NO_AUTO_UPDATE: 1
         run: |
           brew tap coslyk/qtlite
-          brew install pkg-config freetype double-conversion icu4c jasper jpeg libb2 libproxy libtiff pcre2 python@3.9 zstd
+          brew install pkg-config freetype double-conversion icu4c jasper jpeg libb2 libproxy libtiff pcre2 python@3.9 zstd openssl@1.1
 
       - name: Build package
         env:
