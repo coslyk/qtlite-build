@@ -81,6 +81,7 @@ jobs:
             -no-tslib \
             -no-widgets \
             -no-feature-relocatable \
+            -no-feature-brotli \
             -no-feature-concurrent \
             -no-feature-libudev \
             -no-feature-sql \
@@ -108,8 +109,10 @@ jobs:
             -qt-libpng \
             -nomake examples \
             -nomake tests \
+            -openssl-linked \
             -- \
-            -DFEATURE_pkg_config=ON
+            -DFEATURE_pkg_config=ON \
+            -DOPENSSL_ROOT_DIR=/usr/local/opt/openssl@1.1 \
           
           cmake --build . --parallel
           cmake --install .
